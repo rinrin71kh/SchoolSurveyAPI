@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "migrate": "sequelize-cli db:migrate --require ts-node/register",
-    "seed": "sequelize-cli db:seed:all --require ts-node/register"
+    "migrate": "ts-node --project tsconfig.sequelize.json src/database/migrate.ts",
+    "seed": "ts-node --project tsconfig.sequelize.json src/database/seed.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.1",

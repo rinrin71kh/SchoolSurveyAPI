@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"D:\\School survey Project\\api-v1\\src\\":[],"D:\\School survey Project\\api-v1\\src\\app\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}}
