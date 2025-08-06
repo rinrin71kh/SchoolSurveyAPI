@@ -6,7 +6,15 @@ import {
   ForeignKey,
   BelongsTo,
   Default,
+  HasOne,
+  HasMany,
 } from 'sequelize-typescript';
+import { Student } from './Student';
+import { Survey } from './Survey/Survey';
+import { SurveyResponse } from './Survey/SurveyResponse';
+// Uncomment these when models exist
+// import { Survey } from './Survey';
+// import { SurveyResponse } from './SurveyResponse';
 
 @Table({ tableName: 'users', timestamps: false })
 export class User extends Model<User> {
@@ -51,4 +59,13 @@ export class User extends Model<User> {
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
   created_at!: Date;
+
+  @HasOne(() => Student)
+  student!: Student;
+
+  @HasMany(() => Survey)
+  surveys!: Survey[];
+
+  @HasMany(() => SurveyResponse)
+  responses!: SurveyResponse[];
 }
