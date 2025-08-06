@@ -6,49 +6,72 @@ import {
   ForeignKey,
   BelongsTo,
   Default,
+  HasOne,
+  HasMany,
 } from 'sequelize-typescript';
 
+import {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  NonAttribute,
+  ForeignKey as FKType, // ✅ rename to avoid decorator conflict
+} from 'sequelize';
+
+import { Student } from './Student';
+import { Survey } from './Survey/Survey';
+import { SurveyResponse } from './Survey/SurveyResponse';
+
 @Table({ tableName: 'users', timestamps: false })
-export class User extends Model<User> {
+export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  username!: string;
+  declare username: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  role!: string;
+  declare role: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  password!: string;
+  declare password: string;
 
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
-  email!: string;
+  declare email: string;
 
   @Column(DataType.STRING)
-  avatar?: string;
+  declare avatar?: string;
 
   @Column(DataType.STRING)
-  phone?: string;
+  declare phone?: string;
 
   @Default(false)
   @Column(DataType.BOOLEAN)
-  is_student!: boolean;
+  declare is_student: boolean;
 
   @Default('pending')
   @Column(DataType.STRING)
-  approval_status!: string;
+  declare approval_status: string;
 
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
-  approved_by?: number;
+  declare approved_by?: FKType<number>;
 
   @BelongsTo(() => User, 'approved_by')
-  approvedBy?: User;
+  declare approvedBy?: NonAttribute<User>;
 
   @Column(DataType.DATE)
-  approved_at?: Date;
+  declare approved_at?: Date;
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  created_at!: Date;
+  declare created_at: CreationOptional<Date>;
+
+  @HasOne(() => Student)
+  declare student?: NonAttribute<Student>;
+
+  @HasMany(() => Survey)
+  declare surveys?: NonAttribute<Survey[]>;
+
+  @HasMany(() => SurveyResponse)
+  declare responses?: NonAttribute<SurveyResponse[]>;
 }
