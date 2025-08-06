@@ -7,32 +7,44 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
+
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey as FKType,
+  NonAttribute,
+} from 'sequelize';
+
 import { Survey } from './Survey';
 import { User } from '../User';
 import { SurveyAnswer } from './SurveyAnswer';
 
 @Table({ tableName: 'survey_responses', timestamps: false })
-export class SurveyResponse extends Model<SurveyResponse> {
+export class SurveyResponse extends Model<
+  InferAttributes<SurveyResponse>,
+  InferCreationAttributes<SurveyResponse>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => Survey)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  survey_id!: number;
+  declare survey_id: FKType<number>;
 
   @BelongsTo(() => Survey)
-  survey!: Survey;
+  declare survey: NonAttribute<Survey>;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  user_id!: number;
+  declare user_id: FKType<number>;
 
   @BelongsTo(() => User)
-  user!: User;
+  declare user: NonAttribute<User>;
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  submitted_at!: Date;
+  declare submitted_at: CreationOptional<Date>;
 
   @HasMany(() => SurveyAnswer)
-  answers!: SurveyAnswer[];
+  declare answers: NonAttribute<SurveyAnswer[]>;
 }

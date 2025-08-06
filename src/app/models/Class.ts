@@ -6,26 +6,38 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey as FKType,
+  NonAttribute,
+} from 'sequelize';
+
 import { Student } from './Student';
 
 @Table({ tableName: 'classes', timestamps: false })
-export class Class extends Model<Class> {
+export class Class extends Model<
+  InferAttributes<Class>,
+  InferCreationAttributes<Class>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => Student)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  student_id!: number;
+  declare student_id: FKType<number>;
 
   @BelongsTo(() => Student)
-  student!: Student;
+  declare student: NonAttribute<Student>;
 
   @Column(DataType.STRING)
-  class_name!: string;
+  declare class_name: string;
 
   @Column(DataType.STRING)
-  academic_year!: string;
+  declare academic_year: string;
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  created_at!: Date;
+  declare created_at: CreationOptional<Date>;
 }

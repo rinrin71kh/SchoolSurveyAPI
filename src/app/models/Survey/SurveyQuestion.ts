@@ -8,35 +8,47 @@ import {
   HasMany,
   Default,
 } from 'sequelize-typescript';
+
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey as FKType,
+  NonAttribute,
+} from 'sequelize';
+
 import { Survey } from './Survey';
 import { SurveyQuestionOption } from './SurveyQuestionOption';
 import { SurveyAnswer } from './SurveyAnswer';
 
 @Table({ tableName: 'survey_questions', timestamps: false })
-export class SurveyQuestion extends Model<SurveyQuestion> {
+export class SurveyQuestion extends Model<
+  InferAttributes<SurveyQuestion>,
+  InferCreationAttributes<SurveyQuestion>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => Survey)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  survey_id!: number;
+  declare survey_id: FKType<number>;
 
   @BelongsTo(() => Survey)
-  survey!: Survey;
+  declare survey: NonAttribute<Survey>;
 
   @Column({ type: DataType.TEXT, allowNull: false })
-  question!: string;
+  declare question: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  type!: string; // e.g., text, multiple_choice, rating
+  declare type: string; // e.g., text, multiple_choice, rating
 
   @Default(true)
   @Column(DataType.BOOLEAN)
-  is_required!: boolean;
+  declare is_required: boolean;
 
   @HasMany(() => SurveyQuestionOption)
-  options!: SurveyQuestionOption[];
+  declare options: NonAttribute<SurveyQuestionOption[]>;
 
   @HasMany(() => SurveyAnswer)
-  answers!: SurveyAnswer[];
+  declare answers: NonAttribute<SurveyAnswer[]>;
 }

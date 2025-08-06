@@ -1,14 +1,24 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  NonAttribute,
+} from 'sequelize';
+
 import { Survey } from './Survey';
 
 @Table({ tableName: 'survey_types', timestamps: false })
-export class SurveyType extends Model<SurveyType> {
+export class SurveyType extends Model<
+  InferAttributes<SurveyType>,
+  InferCreationAttributes<SurveyType>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  name!: string;
+  declare name: string;
 
   @HasMany(() => Survey)
-  surveys!: Survey[];
+  declare surveys: NonAttribute<Survey[]>;
 }

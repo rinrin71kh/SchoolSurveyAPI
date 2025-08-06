@@ -8,43 +8,55 @@ import {
   HasMany,
   Default,
 } from 'sequelize-typescript';
+
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey as FKType,
+  NonAttribute,
+} from 'sequelize';
+
 import { SurveyType } from './SurveyType';
 import { User } from '../User';
 import { SurveyQuestion } from './SurveyQuestion';
 import { SurveyResponse } from './SurveyResponse';
 
 @Table({ tableName: 'surveys', timestamps: false })
-export class Survey extends Model<Survey> {
+export class Survey extends Model<
+  InferAttributes<Survey>,
+  InferCreationAttributes<Survey>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  title!: string;
+  declare title: string;
 
   @Column({ type: DataType.TEXT, allowNull: false })
-  description!: string;
+  declare description: string;
 
   @ForeignKey(() => SurveyType)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  type_id!: number;
+  declare type_id: FKType<number>;
 
   @BelongsTo(() => SurveyType)
-  type!: SurveyType;
+  declare type: NonAttribute<SurveyType>;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  created_by!: number;
+  declare created_by: FKType<number>;
 
   @BelongsTo(() => User)
-  creator!: User;
+  declare creator: NonAttribute<User>;
 
   @Default(DataType.NOW)
   @Column(DataType.DATE)
-  created_at!: Date;
+  declare created_at: CreationOptional<Date>;
 
   @HasMany(() => SurveyQuestion)
-  questions!: SurveyQuestion[];
+  declare questions: NonAttribute<SurveyQuestion[]>;
 
   @HasMany(() => SurveyResponse)
-  responses!: SurveyResponse[];
+  declare responses: NonAttribute<SurveyResponse[]>;
 }

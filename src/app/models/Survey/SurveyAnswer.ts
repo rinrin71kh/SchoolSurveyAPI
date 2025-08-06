@@ -6,31 +6,43 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey as FKType,
+  NonAttribute,
+} from 'sequelize';
+
 import { SurveyResponse } from './SurveyResponse';
 import { SurveyQuestion } from './SurveyQuestion';
 
 @Table({ tableName: 'survey_answers', timestamps: false })
-export class SurveyAnswer extends Model<SurveyAnswer> {
+export class SurveyAnswer extends Model<
+  InferAttributes<SurveyAnswer>,
+  InferCreationAttributes<SurveyAnswer>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => SurveyResponse)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  response_id!: number;
+  declare response_id: FKType<number>;
 
   @BelongsTo(() => SurveyResponse)
-  response!: SurveyResponse;
+  declare response: NonAttribute<SurveyResponse>;
 
   @ForeignKey(() => SurveyQuestion)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  question_id!: number;
+  declare question_id: FKType<number>;
 
   @BelongsTo(() => SurveyQuestion)
-  question!: SurveyQuestion;
+  declare question: NonAttribute<SurveyQuestion>;
 
   @Column(DataType.STRING)
-  selected_option!: string;
+  declare selected_option: string;
 
   @Column(DataType.TEXT)
-  answer_text!: string;
+  declare answer_text: string;
 }

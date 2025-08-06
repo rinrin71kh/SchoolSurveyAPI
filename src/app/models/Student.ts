@@ -8,28 +8,39 @@ import {
   HasMany,
   Default,
 } from 'sequelize-typescript';
+import type {
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  NonAttribute,
+  ForeignKey as FKType,
+} from 'sequelize';
+
 import { User } from './User';
 import { Class } from './Class';
 
 @Table({ tableName: 'students', timestamps: false })
-export class Student extends Model<Student> {
+export class Student extends Model<
+  InferAttributes<Student>,
+  InferCreationAttributes<Student>
+> {
   @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true })
-  id!: number;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false, unique: true })
-  user_id!: number;
+  declare user_id: FKType<number>;
 
   @BelongsTo(() => User)
-  user!: User;
+  declare user: NonAttribute<User>;
 
   @Column(DataType.STRING)
-  status!: string;
+  declare status: string;
 
   @Default(DataType.NOW)
   @Column(DataType.DATE)
-  created_at!: Date;
+  declare created_at: CreationOptional<Date>;
 
   @HasMany(() => Class)
-  classes!: Class[];
+  declare classes: NonAttribute<Class[]>;
 }
